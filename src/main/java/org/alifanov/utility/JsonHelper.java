@@ -1,4 +1,4 @@
-package com.alifanov.utility;
+package org.alifanov.utility;
 
 public class JsonHelper {
 

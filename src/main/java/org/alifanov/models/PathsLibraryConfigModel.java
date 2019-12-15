@@ -1,4 +1,4 @@
-package com.alifanov.models;
+package org.alifanov.models;
 
 public class PathsLibraryConfigModel {
 

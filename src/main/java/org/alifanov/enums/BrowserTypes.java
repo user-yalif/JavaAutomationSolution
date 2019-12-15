@@ -1,4 +1,4 @@
-package com.alifanov.enums;
+package org.alifanov.enums;
 
 public enum BrowserTypes {
 	Chrome,
