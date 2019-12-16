@@ -9,12 +9,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import lombok.Getter;
-import lombok.Setter;
 
 public class BasePage {
-	private @Getter @Setter WebDriver webDriver;
-	protected @Getter @Setter Action action;
-	protected @Getter @Setter Waits wait;
+	private @Getter WebDriver webDriver;
+	protected @Getter Action action;
+	protected @Getter Waits wait;
 
 	public BasePage(WebDriver driver) {
 		this.webDriver = driver;

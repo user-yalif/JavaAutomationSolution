@@ -1,9 +1,10 @@
-package org.alifanov.test_cases;
+package org.alifanov.test.ui;
 
 import org.alifanov.configurations.Drivers;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
+import static org.alifanov.utility.PropertiesHelper.properties;
 
 public class UIBaseTest {
 
@@ -11,13 +12,10 @@ public class UIBaseTest {
 	public WebDriver getDriver() {
 		return driver.webBrowser;
 	}
-	private String browserType = "Chrome";
-	private String testEnvUrl = "https://www.olx.ua/transport/legkovye-avtomobili/dnepr/q-" + 
-			"%D0%BB%D0%B5%D0%B3%D0%BA%D0%BE%D0%B2%D1%8B%D0%B5-" + 
-			"%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%BE%D0%B1%D0%B8%D0%BB%D0%B8/";
+	private String browserType = properties.getProperty("browser.type");
+	private String testEnvUrl = properties.getProperty("test.env.url");
 
 	public UIBaseTest() {
-
 	}
 
 	@Before

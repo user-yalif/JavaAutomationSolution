@@ -15,7 +15,7 @@ public final class Drivers {
 
 	@Getter @Setter public static List<WebDriver> webBrowserInstanses = new ArrayList<WebDriver>();
 
-	@Getter @Setter public WebDriver webBrowser;
+	@Getter public WebDriver webBrowser;
 
 	public Drivers(String browserType) {
 		switch (browserType) {

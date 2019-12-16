@@ -24,5 +24,4 @@ public class ChromeBrowserConfig {
 
 		return options;
 	}
-
 }
