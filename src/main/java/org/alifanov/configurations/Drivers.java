@@ -13,14 +13,14 @@ import lombok.Setter;
 
 public final class Drivers {
 
-	public @Getter @Setter static List<WebDriver> webBrowserInstanses = new ArrayList<WebDriver>();
+	@Getter @Setter public static List<WebDriver> webBrowserInstanses = new ArrayList<WebDriver>();
 
-	public @Getter @Setter WebDriver webBrowser;
+	@Getter @Setter public WebDriver webBrowser;
 
 	public Drivers(String browserType) {
 		switch (browserType) {
 		case "Chrome":
-			System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver", "./src/main/resourses/org/alifanov/drivers/chromedriver.exe");
 			this.webBrowser = new ChromeDriver(getChromeOptions());
 			break;
 		case "FireFox":
