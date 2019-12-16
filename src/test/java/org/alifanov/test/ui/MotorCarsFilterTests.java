@@ -5,13 +5,13 @@ import org.alifanov.test_cases.UIBaseTest;
 import org.junit.Test;
 
 public class MotorCarsFilterTests extends UIBaseTest {
-	public MotorCarsFilterTests(){
+	public MotorCarsFilterTests() {
 		super();
 	}
-	
+
 	@Test
 	public void DefaultFiltersFieldsTest() throws InterruptedException {
 		MotorCarsPage carsPage = new MotorCarsPage(super.getDriver());
-		
+
 	}
 }
