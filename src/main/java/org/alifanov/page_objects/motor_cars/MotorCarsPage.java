@@ -12,11 +12,11 @@ public class MotorCarsPage extends BasePage {
 		super(driver);		
 	}
 	
-	private List<WebElement> DefaultTextFieldsHeaders(){
+	private List<WebElement> TextFieldsHeaders(){
 		return super.getElements(By.xpath("//span[contains(@class, 'header block')]"));
 	}
 	
 	public List<WebElement> GetTextFieldsHeaders(){
-		return this.DefaultTextFieldsHeaders();
+		return this.TextFieldsHeaders();
 	}
 }
