@@ -10,7 +10,7 @@ public class ChromeBrowserConfig {
 		ChromeOptions options = new ChromeOptions();
 		HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
 
-		options.addArguments("--window-size=500,1000");
+		options.addArguments("--window-size=500,600");
 		options.addArguments("--disable-infobars");
 		options.addArguments("--disable-extensions");
 		options.addArguments("--no-sandbox");
