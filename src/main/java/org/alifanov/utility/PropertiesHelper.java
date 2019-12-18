@@ -9,10 +9,11 @@ public class PropertiesHelper {
 	public static Properties properties = PropertyLoader.loadProperties();
 
 	private static class PropertyLoader {
+		
 		public static Properties loadProperties() {
 			Properties prop = new Properties();
 
-			try (InputStream input = new FileInputStream("./configs.properties")) {
+			try (InputStream input = new FileInputStream("./properties/configs.properties")) {
 
 				prop.load(input);
 
