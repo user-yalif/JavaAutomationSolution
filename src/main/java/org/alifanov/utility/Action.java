@@ -21,4 +21,8 @@ public class Action {
 	public void sendKeysTo(WebElement element, String text) {
 		element.sendKeys(text);
 	}
+	
+	public void submitOf(WebElement element) {
+		element.submit();
+	}
 }

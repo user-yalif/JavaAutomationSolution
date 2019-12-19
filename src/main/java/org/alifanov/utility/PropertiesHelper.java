@@ -6,22 +6,25 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class PropertiesHelper {
+	
+	private static String pathToProperties = "./properties/configs.properties";
+	
 	public static Properties properties = PropertyLoader.loadProperties();
 
-	private static class PropertyLoader {
+	private static class PropertyLoader {	
 		
 		public static Properties loadProperties() {
-			Properties prop = new Properties();
+			Properties properties = new Properties();
 
-			try (InputStream input = new FileInputStream("./properties/configs.properties")) {
+			try (InputStream input = new FileInputStream(pathToProperties)){
 
-				prop.load(input);
+				properties.load(input);
 
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
 
-			return prop;
+			return properties;
 		}
 	}
 }

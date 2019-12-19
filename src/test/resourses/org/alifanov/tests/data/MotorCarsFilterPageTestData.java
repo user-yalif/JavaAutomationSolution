@@ -7,9 +7,11 @@ import lombok.Getter;
 
 public class MotorCarsFilterPageTestData {
 
-	public @Getter List<String> defaultPlaceholders;
-	public @Getter List<String> brands;
-	public @Getter List<String> priceInput;
+	public List<String> defaultPlaceholders;
+	private @Getter List<String> brands;
+	private @Getter List<String> priceInput;;
+	private @Getter int mileageFrom;
+	private @Getter int mileageTo;
 
 	public MotorCarsFilterPageTestData() {
 		this.defaultPlaceholders = new ArrayList<String>(
@@ -49,5 +51,7 @@ public class MotorCarsFilterPageTestData {
 						"!@#$%^&*()",
 						"12358$%9"
 						));
+		this.mileageFrom = 100000;
+		this.mileageTo = 200000;
 	}
 }						
