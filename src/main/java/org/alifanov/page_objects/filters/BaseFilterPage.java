@@ -1,4 +1,4 @@
-package org.alifanov.page_objects.motor_cars;
+package org.alifanov.page_objects.filters;
 
 import org.alifanov.page_objects.BasePage;
 import org.openqa.selenium.By;
@@ -16,7 +16,6 @@ public class BaseFilterPage extends BasePage {
 	
 	protected void inputPrice(WebElement element, String price) {
 		super.action.sendKeysTo(element, price);
-		super.wait.waitThread(3);
 	}
 	
 	protected String getTextFieldValue(WebElement element) {
@@ -26,6 +25,9 @@ public class BaseFilterPage extends BasePage {
 	protected void clickOnCrossIcon(WebElement textField) {
 		var cross = textField.findElement(crossSignLocator);
 		super.action.clickOn(cross);
-		super.wait.waitThread(3);
+	}
+
+	public void inputTextField(WebElement element, String text) {
+		super.action.sendKeysTo(element, text);
 	}
 }

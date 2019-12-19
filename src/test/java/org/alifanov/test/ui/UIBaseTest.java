@@ -13,7 +13,7 @@ public class UIBaseTest {
 	private Drivers driver;
 
 	public WebDriver getDriver() {
-		return driver.webBrowser;
+		return driver.getWebBrowser();
 	}
 
 	private String browserType = properties.getProperty("browser.type");
@@ -23,25 +23,25 @@ public class UIBaseTest {
 	public UIBaseTest() {
 	}
 
+	private void LoadBrowser() {
+		this.log.info(String.format("%s browser loading", this.browserType));
+		this.driver = new Drivers(this.browserType);
+		this.log.info(String.format("Go to page: %s", testEnvUrl));
+		this.driver.getWebBrowser().get(testEnvUrl);
+	}
+
 	@Before
 	public void launchBrowser() {
 		this.LoadBrowser();
-	}
-
-	private void LoadBrowser() {
-		this.log.info("Loading browser");
-		this.driver = new Drivers(this.browserType);
-		this.driver.webBrowser.get(testEnvUrl);
 	}
 
 	@After
 	public void closeAllTestResourses() {
 		for (WebDriver webDriverInstance : Drivers.webBrowserInstanses) {
 			webDriverInstance.quit();
-			log.info("Driver: Quit");
+			log.info(String.format("%s Driver: Quit", this.browserType));
 		}
 
 		Drivers.webBrowserInstanses.clear();
 	}
-
 }

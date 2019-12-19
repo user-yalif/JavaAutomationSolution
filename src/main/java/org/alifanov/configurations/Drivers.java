@@ -9,18 +9,18 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import lombok.Getter;
-import lombok.Setter;
 
 public final class Drivers {
 
-	@Getter @Setter public static List<WebDriver> webBrowserInstanses = new ArrayList<WebDriver>();
+	public static List<WebDriver> webBrowserInstanses = new ArrayList<WebDriver>();
 
-	@Getter public WebDriver webBrowser;
+	private String pathToDriver = System.getProperty("user.dir") + "/./drivers/chromedriver.exe";
+	@Getter private WebDriver webBrowser;
 
 	public Drivers(String browserType) {
 		switch (browserType) {
 		case "Chrome":
-			System.setProperty("webdriver.chrome.driver", "./src/main/resourses/org/alifanov/drivers/chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver", pathToDriver);
 			this.webBrowser = new ChromeDriver(getChromeOptions());
 			break;
 		case "FireFox":

@@ -12,8 +12,8 @@ import lombok.Getter;
 
 public class BasePage {
 	private @Getter WebDriver webDriver;
-	protected @Getter Action action;
-	protected @Getter Waits wait;
+	protected Action action;
+	protected Waits wait;
 
 	public BasePage(WebDriver driver) {
 		this.webDriver = driver;

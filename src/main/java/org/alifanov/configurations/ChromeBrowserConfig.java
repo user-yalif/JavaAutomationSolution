@@ -18,7 +18,7 @@ public class ChromeBrowserConfig {
 		chromePrefs.put("profile.default_content_settings.popups", false);
 		chromePrefs.put("credentials_enable_service", false);
 		chromePrefs.put("profile.password_manager_enabled", false);
-		chromePrefs.put("profile.default_content_setting_values.automatic_downloads", 1);
+		chromePrefs.put("profile.default_content_setting_values.automatic_downloads", true);
 
 		options.setExperimentalOption("prefs", chromePrefs);
 
