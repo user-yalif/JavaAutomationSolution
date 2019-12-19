@@ -14,4 +14,12 @@ public class Waits {
 		this.webDriver = driver;
 		this.wait = new WebDriverWait(this.webDriver, explicitTimeOut);
 	}
+	
+	public void waitThread(int sec) {
+		try {
+			Thread.sleep(sec * 1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 }
