@@ -3,9 +3,7 @@ package org.alifanov.page_objects;
 import java.util.List;
 
 import org.alifanov.utility.Action;
-import org.alifanov.utility.LogHelper;
 import org.alifanov.utility.Waits;
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

@@ -6,7 +6,7 @@ public class Action {
 	public Action() {
 	}
 
-	public void ClickOn(WebElement element) {
+	public void clickOn(WebElement element) {
 		element.click();
 	}
 
@@ -14,7 +14,11 @@ public class Action {
 		return element.getText().trim();
 	}
 
-	public void SendKeysTo(WebElement element, String text) {
+	public void clear(WebElement element) {
+		element.clear();
+	}
+	
+	public void sendKeysTo(WebElement element, String text) {
 		element.sendKeys(text);
 	}
 }
