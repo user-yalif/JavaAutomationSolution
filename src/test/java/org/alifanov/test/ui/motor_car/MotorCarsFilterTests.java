@@ -81,35 +81,24 @@ public class MotorCarsFilterTests extends UIBaseTest {
 
 		MotorCarsFilterPage carsFilterPage = new MotorCarsFilterPage(super.getDriver());
 
-		log.info("STEP 1: Checking Price from text field.");
-
-		for (var input : testData.getPriceInput()) {
-			carsFilterPage.inputPriceFrom(input);
-			var textFieldValue = carsFilterPage.getPriceFromValue();
-
-			log.info(String.format("INPUT: %s", input));
+		for (String priceInput : testData.getPriceInput()) {
+			carsFilterPage.inputPriceFrom(priceInput);
+			String textFieldValue = carsFilterPage.getPriceFromValue();
+			String value = RegexHelper.getFirstIntegerFromString(textFieldValue);
 
 			try {
-				if (textFieldValue != null && !textFieldValue.isEmpty()) {
-					String value = RegexHelper.getFirstIntegerFromString(textFieldValue);
-
-					Assert.assertTrue(String.format("Incorrect input format: %s", textFieldValue), value.equals(input));
-
-					carsFilterPage.removePriceFromValue();
-
-				} else if (textFieldValue == null || textFieldValue.isEmpty()) {
-					Assert.assertTrue(textFieldValue == null || textFieldValue.isEmpty());
-					log.info(String.format("Price from input field does not take %s input", textFieldValue));
+				if (value != null && value.equals(priceInput)) {
+					log.info(String.format("CORRECT INPUT: %s", priceInput));
+				} else if (textFieldValue.equals("÷ена от (грн.)")) {
+					log.info(String.format("IGNORED INPUT: %s", priceInput));
 				} else {
-					Assert.fail(String.format("Price input field takes incorect value %s", textFieldValue));
+					Assert.assertEquals(priceInput, textFieldValue);
 				}
 			} catch (AssertionError e) {
-				log.warn(String.format("Price input field takes incorrect format %s", textFieldValue));
+				log.info(String.format("INCORRECT INPUT: %s", priceInput));
 				throw new AssertionError();
 			}
 		}
-
-		log.info("RESULT: Price text field takes correct input");
 	}
 
 	@Test
@@ -139,13 +128,13 @@ public class MotorCarsFilterTests extends UIBaseTest {
 			log.warn("Mileage on the page is null!");
 		}
 	}
-	
+
 	@Test
 	public void MotorCarsFilterPageMileageDropdownInput() {
 		log.info("TEST: Verifies sorting cars by choosing mileage values from dropdown on Motor Cars Filter Page");
 		log.info(String.format("MILEAGE FROM: %s; MILEAGE TO: %s", testData.getMileageFrom(), testData.getMileageTo()));
 
 		MotorCarsFilterPage carsFilterPage = new MotorCarsFilterPage(super.getDriver());
-		
+
 	}
 }
