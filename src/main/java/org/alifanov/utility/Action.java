@@ -1,9 +1,15 @@
 package org.alifanov.utility;
 
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 public class Action {
-	public Action() {
+	private WebDriver webDriver;
+	
+	public Action(WebDriver driver) {
+		this.webDriver = driver;
 	}
 
 	public void clickOn(WebElement element) {
@@ -24,5 +30,9 @@ public class Action {
 	
 	public void submitOf(WebElement element) {
 		element.submit();
+	}
+	
+	public void pressEnter() {
+		new Actions(this.webDriver).sendKeys(Keys.ENTER);
 	}
 }

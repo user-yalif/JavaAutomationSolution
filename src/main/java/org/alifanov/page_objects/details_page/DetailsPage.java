@@ -17,24 +17,22 @@ public class DetailsPage extends BasePage {
 		super(driver);
 
 		try {
-			assertTrue("Написать автору".equals(super.action.getTextOf((writeToAthorLocator()))));
-		} catch (Exception e) {
-			log.warn("Detail Page was not downloaded!");
+			assertTrue(super.wait.appearenceOf(writeToAthor));
+			log.info("PAGE: Detail Page UPLOADED");
+		} catch (AssertionError e) {
+			log.warn("PAGE: Detail Page UNABLE TO UPLOAD");
+			throw new AssertionError();
 		}
-
-		log.info("Detail Page was downloaded");
 	}
 
 	// Locators
-	private WebElement writeToAthorLocator() {
-		return super.getElement(By.xpath("//li//i[@data-icon='message']/following-sibling::span"));
-	}
-	
+	private final By writeToAthor = By.xpath("//li//i[@data-icon='message']/following-sibling::span");
+
 	private WebElement mileageValueLocator() {
 		return super.getElement(By.xpath("//th[normalize-space()='Пробег']/following-sibling::td/strong"));
 	}
 	// end Locators
-	
+
 	public String getMileageValue() {
 		return super.action.getTextOf(mileageValueLocator());
 	}

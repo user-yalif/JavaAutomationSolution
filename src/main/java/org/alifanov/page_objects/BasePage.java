@@ -17,15 +17,28 @@ public class BasePage {
 
 	public BasePage(WebDriver driver) {
 		this.webDriver = driver;
-		this.action = new Action();
+		this.action = new Action(this.webDriver);
 		this.wait = new Waits(this.webDriver);
 	}
 
+	// Locators
+	private By closeCookieButton = By.xpath("//button[contains(@class, 'cookie-close')]");
+	
+	private WebElement closeCookiesButtonLocator() {
+		return this.webDriver.findElement(closeCookieButton);
+	}
+	// end Locators
+	
 	protected WebElement getElement(By locator) {
 		return this.webDriver.findElement(locator);
 	}
 
 	protected List<WebElement> getElements(By locator) {
 		return this.webDriver.findElements(locator);
+	}
+	
+	protected void closeCookieMessage() {
+		this.wait.appearenceOf(closeCookieButton);
+		this.action.clickOn(closeCookiesButtonLocator());
 	}
 }
