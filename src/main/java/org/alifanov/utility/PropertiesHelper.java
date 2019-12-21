@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public class PropertiesHelper {
 	
-	private static String pathToProperties = "./properties/configs.properties";
+	private final static String pathToProperties = "./properties/configs.properties";
 	
 	public static Properties properties = PropertyLoader.loadProperties();
 

@@ -14,7 +14,7 @@ public final class Drivers {
 
 	public static List<WebDriver> webBrowserInstanses = new ArrayList<WebDriver>();
 
-	private String pathToDriver = System.getProperty("user.dir") + "/./drivers/chromedriver.exe";
+	private final String pathToDriver = System.getProperty("user.dir") + "/./drivers/chromedriver.exe";
 	@Getter private WebDriver webBrowser;
 
 	public Drivers(String browserType) {

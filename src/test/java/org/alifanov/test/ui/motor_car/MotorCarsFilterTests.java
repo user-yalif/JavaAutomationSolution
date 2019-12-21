@@ -12,6 +12,7 @@ import org.alifanov.utility.LogHelper;
 import org.alifanov.utility.RegexHelper;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MotorCarsFilterTests extends UIBaseTest {
@@ -31,21 +32,18 @@ public class MotorCarsFilterTests extends UIBaseTest {
 		MotorCarsFilterPage carsFilterPage = new MotorCarsFilterPage(super.getDriver());
 		testData.defaultPlaceholders = sortAscending(this.testData.defaultPlaceholders);
 
-		log.info("STEP 1: Check all default filter text field's palceholders");
-
 		List<String> actualPlaceholders = carsFilterPage.getTextFieldsHeaders();
 		actualPlaceholders = sortAscending(actualPlaceholders);
 
 		try {
 			Assert.assertArrayEquals(testData.defaultPlaceholders.toArray(), actualPlaceholders.toArray());
+			log.info("RESULT: Placeholders on the page are as expected");
 		} catch (AssertionError e) {
 			log.warn("Motor Cars Default Placeholders are not the same as expected " + e.toString());
 			throw new AssertionError();
 		}
 
 		actualPlaceholders.clear();
-
-		log.info("RESULT: Placeholders on the page are as expected");
 	}
 
 	@Test
@@ -54,9 +52,7 @@ public class MotorCarsFilterTests extends UIBaseTest {
 
 		MotorCarsFilterPage carsFilterPage = new MotorCarsFilterPage(super.getDriver());
 
-		log.info("STEP 1: Check if Brand's dropdown contains some auto brands");
-
-		carsFilterPage.clickOnBrandsDropdown();
+		carsFilterPage.clickOnBrandsTextField();
 		List<String> actualBrands = carsFilterPage.getBrandDropdownItemsText();
 
 		try {
@@ -71,8 +67,6 @@ public class MotorCarsFilterTests extends UIBaseTest {
 		}
 
 		actualBrands.clear();
-
-		log.info("RESULT: Brands Dropdown contains all expected brands");
 	}
 
 	@Test
@@ -92,21 +86,24 @@ public class MotorCarsFilterTests extends UIBaseTest {
 				} else if (textFieldValue.equals("÷ена от (грн.)")) {
 					log.info(String.format("IGNORED INPUT: %s", priceInput));
 				} else {
-					Assert.assertEquals(priceInput, textFieldValue);
+					Assert.fail("Incorrect input");
 				}
 			} catch (AssertionError e) {
-				log.info(String.format("INCORRECT INPUT: %s", priceInput));
+				log.warn(String.format("INCORRECT INPUT: %s", priceInput));
 				throw new AssertionError();
 			}
 		}
 	}
 
 	@Test
+//	@Ignore
 	public void MotorCarsFilterPageMileageManualInput() {
 		log.info("TEST: Verifies sorting cars by manual inputing of their mileage on Motor Cars Filter Page");
-		log.info(String.format("MILEAGE FROM: %s; MILEAGE TO: %s", testData.getMileageFrom(), testData.getMileageTo()));
 
 		MotorCarsFilterPage carsFilterPage = new MotorCarsFilterPage(super.getDriver());
+
+		log.info(String.format("MILEAGE FROM: %s; MILEAGE TO: %s", testData.getMileageFrom(), testData.getMileageTo()));
+
 		carsFilterPage.inputMileageFrom(Integer.toString(testData.getMileageFrom()));
 		carsFilterPage.inputMileageTo(Integer.toString(testData.getMileageTo()));
 		carsFilterPage.clickOnSearchButton();
@@ -130,11 +127,14 @@ public class MotorCarsFilterTests extends UIBaseTest {
 	}
 
 	@Test
+	@Ignore
 	public void MotorCarsFilterPageMileageDropdownInput() {
 		log.info("TEST: Verifies sorting cars by choosing mileage values from dropdown on Motor Cars Filter Page");
-		log.info(String.format("MILEAGE FROM: %s; MILEAGE TO: %s", testData.getMileageFrom(), testData.getMileageTo()));
 
 		MotorCarsFilterPage carsFilterPage = new MotorCarsFilterPage(super.getDriver());
 
+		log.info(String.format("MILEAGE FROM: %s; MILEAGE TO: %s", testData.getMileageFrom(), testData.getMileageTo()));
+
+		carsFilterPage.clickOnBrandsTextField();
 	}
 }

@@ -11,15 +11,16 @@ public class BaseFilterPage extends BasePage {
 	}
 
 	// Locators
-	private By crossSignLocator = By.xpath("//span[@class='icon abs clear mini']");
-	private By suggestInputDropdownLocator = By.xpath("//ul[contains(@class, 'small suggestinput')]");
+	private final By crossSignLocator = By.xpath("//span[@class='icon abs clear mini']");
+	private final By dropdownLocator = By.xpath("//ul[contains(@class, 'small suggestinput') and @style='display: block;']");
+	private final By pageLoader = By.xpath("//div[@class='pageloader' and contains(@style, 'none')]//div[contains(@style, 'width: 0px')]");
 	
 	private WebElement crossIconOf(WebElement element) {
 		return element.findElement(crossSignLocator);
 	}
 	
-	protected WebElement suggestInputDropdownLocatorOf(WebElement element) {
-		return element.findElement(suggestInputDropdownLocator);
+	protected WebElement dropdownLocatorOf(WebElement element) {
+		return element.findElement(dropdownLocator);
 	}
 	// end Locators
 
@@ -27,15 +28,19 @@ public class BaseFilterPage extends BasePage {
 		super.action.sendKeysTo(element, price);
 	}
 
-	protected String getTextFieldValue(WebElement element) {
-		return super.action.getTextOf(element);
+	protected String getTextFieldValue(WebElement textField) {
+		return super.action.getTextOf(textField);
 	}
 
 	protected void clickOnCrossIconOf(WebElement textField) {
 		super.action.clickOn(crossIconOf(textField));
 	}
 
-	public void inputTextField(WebElement element, String text) {
-		super.action.sendKeysTo(element, text);
+	public void inputTextField(WebElement textFieldInput, String text) {
+		super.action.sendKeysTo(textFieldInput, text);
+	}
+	
+	public void waitForPageLoaded() {
+		super.wait.appearenceOf(pageLoader);
 	}
 }

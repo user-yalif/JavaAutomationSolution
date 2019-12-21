@@ -18,21 +18,27 @@ public class MotorCarsFilterPage extends BaseFilterPage {
 
 	public MotorCarsFilterPage(WebDriver driver) {
 		super(driver);
-
+		
 		try {
-			assertTrue("Легковые автомобили".equals(super.action.getTextOf(motorCarsFilterPageHeaderLocator())));
-		} catch (Exception e) {
-			log.warn("Motor Cars Filter Page was not downloaded!");
+			assertTrue(super.wait.appearenceOf(motorCarsFilterPageHeader));
+			log.info("PAGE: Motor Cars Filter Page UPLOADED");
+			super.closeCookieMessage();
+		} catch (AssertionError e) {
+			log.warn("PAGE: Motor Cars Filter Page UNABLE TO UPLOAD");
+			throw new AssertionError();
 		}
-
-		log.info("Motor Cars Filter Page was downloaded");
 	}
 
 	// Locators
-	private WebElement motorCarsFilterPageHeaderLocator() {
-		return super.getElement(By.xpath("//span[@id='main-category-choose-label']"));
-	}
-
+	private final By motorCarsFilterPageHeader = By.xpath("//span[@id='main-category-choose-label']");
+	private final By brandDropdown = By.xpath("//li[@id='param_subcat']//ul");
+	private final By priceValue = By.xpath("//div[contains(@class, 'filter-item-from') and contains(@class, 'price')]//a[not(contains(@class, 'hidden'))]/span[@class='header block']");
+	private final By priceFromDropdown = By.xpath("//div[contains(@class, 'filter-item-from') and contains(@class, 'price')] and @style='display: block;']");
+	private final By mileageFromDropdown = By.xpath(
+			"//li[@data-key='motor_mileage']//div[contains(@class, 'filter-item-from')]//ul[contains(@class, 'small suggestinput') and @style='display: block;']");
+	private final By mileageToDropdown = By.xpath(
+			"//li[@data-key='motor_mileage']//div[contains(@class, 'filter-item-to')]//ul[contains(@class, 'small suggestinput') and @style='display: block;']");
+		
 	private List<WebElement> textFieldsHeadersLocator() {
 		return super.getElements(By.xpath("//span[contains(@class, 'header block')]"));
 	}
@@ -41,11 +47,7 @@ public class MotorCarsFilterPage extends BaseFilterPage {
 		return super.getElement(By.xpath("//span[normalize-space()='Марка']"));
 	}
 
-	private WebElement brandDropDownLocator() {
-		return super.getElement(By.xpath("//li[@id='param_subcat']//ul"));
-	}
-
-	private List<WebElement> brandDropDownItemsLocator(){
+	private List<WebElement> brandDropDownItemsLocator() {
 		return super.getElements(By.xpath("//ul//a[@data-name='search[category_id]']"));
 	}
 
@@ -81,7 +83,7 @@ public class MotorCarsFilterPage extends BaseFilterPage {
 		return super.getElement(By.xpath("//span[contains(@class, 'button search')]"));
 	}
 
-	private List<WebElement> detailsPageLinkLocators(){
+	private List<WebElement> detailsPageLinkLocators() {
 		return super.getElements(By.xpath("//td[@class='title-cell']//a[contains(@class, 'detailsLink')]"));
 	}
 	// end Locators
@@ -97,12 +99,12 @@ public class MotorCarsFilterPage extends BaseFilterPage {
 		return headers;
 	}
 
-	public void clickOnBrandsDropdown() {
+	public void clickOnBrandsTextField() {
 		super.action.clickOn(brandTextFieldLocator());
-		super.wait.untilVisibilityOf(brandDropDownLocator());
+		super.wait.appearenceOf(brandDropdown);
 	}
 
-	public List<String> getBrandDropdownItemsText(){
+	public List<String> getBrandDropdownItemsText() {
 		List<WebElement> items = this.brandDropDownItemsLocator();
 		List<String> itemsText = new ArrayList<String>();
 
@@ -120,10 +122,11 @@ public class MotorCarsFilterPage extends BaseFilterPage {
 
 		super.inputTextField(priceFromInputLocator(), price);
 		super.action.submitOf(priceFromInputLocator());
-		super.wait.untilInvisibilityOf(super.suggestInputDropdownLocatorOf(priceFromTextFieldLocator()));
+		super.wait.disappearenceOf(priceFromDropdown);
 	}
 
 	public String getPriceFromValue() {
+		super.wait.appearenceOf(priceValue);
 		return super.action.getTextOf(priceFromValueLocator());
 	}
 
@@ -133,6 +136,9 @@ public class MotorCarsFilterPage extends BaseFilterPage {
 		super.action.clickOn(mileageFromTextFieldLocator());
 
 		super.inputTextField(mileageFromInputLocator(), mileage);
+		super.action.submitOf(mileageFromInputLocator());
+		super.action.pressEnter();
+		super.wait.disappearenceOf(mileageFromDropdown);
 	}
 
 	public void inputMileageTo(String mileage) {
@@ -141,10 +147,14 @@ public class MotorCarsFilterPage extends BaseFilterPage {
 		super.action.clickOn(mileageToTextFieldLocator());
 
 		super.inputTextField(mileageToInputLocator(), mileage);
+		super.action.submitOf(mileageToInputLocator());
+		super.action.pressEnter();
+		super.wait.disappearenceOf(mileageToDropdown);
 	}
 
 	public void clickOnSearchButton() {
 		super.action.clickOn(searchButtonLocator());
+		super.waitForPageLoaded();
 	}
 
 	public DetailsPage clickOnDetailsPageLink(int linkIndex) {
