@@ -4,30 +4,28 @@ import static org.alifanov.utility.ArayListsHelper.sortAscending;
 
 import java.util.List;
 
-import org.alifanov.page_objects.details_page.DetailsPage;
 import org.alifanov.page_objects.filters.motor_cars.MotorCarsFilterPage;
 import org.alifanov.test.ui.UIBaseTest;
 import org.alifanov.tests.data.MotorCarsFilterPageTestData;
 import org.alifanov.utility.LogHelper;
 import org.alifanov.utility.RegexHelper;
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
 public class MotorCarsFilterTests extends UIBaseTest {
 
-	private Logger log = LogHelper.getLogger(MotorCarsFilterTests.class);
 	private MotorCarsFilterPageTestData testData;
 
 	public MotorCarsFilterTests() {
 		super();
+		testLogger = LogHelper.getLogger(MotorCarsFilterTests.class);
 		testData = new MotorCarsFilterPageTestData();
 	}
 
 	@Test
 	public void MotorCarsFilterDefaultPlaceholders() {
-		log.info("TEST: Verifies default filters placeholders on the Motor Cars Filter Page");
+		testLogger.info("TEST: Verifies default filters placeholders on the Motor Cars Filter Page");
 
 		MotorCarsFilterPage carsFilterPage = new MotorCarsFilterPage(super.getDriver());
 		testData.defaultPlaceholders = sortAscending(this.testData.defaultPlaceholders);
@@ -37,9 +35,9 @@ public class MotorCarsFilterTests extends UIBaseTest {
 
 		try {
 			Assert.assertArrayEquals(testData.defaultPlaceholders.toArray(), actualPlaceholders.toArray());
-			log.info("RESULT: Placeholders on the page are as expected");
+			testLogger.info("RESULT: Placeholders on the page are as expected");
 		} catch (AssertionError e) {
-			log.warn("Motor Cars Default Placeholders are not the same as expected " + e.toString());
+			testLogger.warn("Motor Cars Default Placeholders are not the same as expected " + e.toString());
 			throw new AssertionError();
 		}
 
@@ -48,7 +46,7 @@ public class MotorCarsFilterTests extends UIBaseTest {
 
 	@Test
 	public void MotorCarsFilterAutoBrandsDropdown() {
-		log.info("TEST: Verifies presence of some brands in Brands dropdown on Motor Cars Filter Page");
+		testLogger.info("TEST: Verifies presence of some brands in Brands dropdown on Motor Cars Filter Page");
 
 		MotorCarsFilterPage carsFilterPage = new MotorCarsFilterPage(super.getDriver());
 
@@ -57,12 +55,12 @@ public class MotorCarsFilterTests extends UIBaseTest {
 
 		try {
 			for (String brand : testData.getBrands()) {
-				log.info(String.format("EXPECTED BRAND: %s", brand));
 				Assert.assertTrue(String.format("Brand %s does not exist in dropdown", brand),
 						actualBrands.contains(brand));
+				testLogger.info(String.format("EXPECTED BRAND: %s EXISTS in dropdown", brand));
 			}
 		} catch (AssertionError e) {
-			log.warn("Brands Dropdown does not contain some brands of cars " + e.toString());
+			testLogger.warn("Brands Dropdown does not contain some brands of cars " + e.toString());
 			throw new AssertionError();
 		}
 
@@ -71,7 +69,8 @@ public class MotorCarsFilterTests extends UIBaseTest {
 
 	@Test
 	public void MotorCarsFilterPriceTextFieldInput() {
-		log.info("TEST: Verifies that only numbers can be inputed in Price text field on Motor Cars Filter Page");
+		testLogger
+				.info("TEST: Verifies that only numbers can be inputed in Price text field on Motor Cars Filter Page");
 
 		MotorCarsFilterPage carsFilterPage = new MotorCarsFilterPage(super.getDriver());
 
@@ -82,59 +81,156 @@ public class MotorCarsFilterTests extends UIBaseTest {
 
 			try {
 				if (value != null && value.equals(priceInput)) {
-					log.info(String.format("CORRECT INPUT: %s", priceInput));
+					testLogger.info(String.format("CORRECT INPUT: %s", priceInput));
 				} else if (textFieldValue.equals("÷ена от (грн.)")) {
-					log.info(String.format("IGNORED INPUT: %s", priceInput));
+					testLogger.info(String.format("IGNORED INPUT: %s", priceInput));
 				} else {
 					Assert.fail("Incorrect input");
 				}
 			} catch (AssertionError e) {
-				log.warn(String.format("INCORRECT INPUT: %s", priceInput));
+				testLogger.warn(String.format("INCORRECT INPUT: %s", priceInput));
 				throw new AssertionError();
 			}
 		}
 	}
 
 	@Test
-//	@Ignore
 	public void MotorCarsFilterPageMileageManualInput() {
-		log.info("TEST: Verifies sorting cars by manual inputing of their mileage on Motor Cars Filter Page");
+		testLogger.info("TEST: Verifies sorting cars by manual inputing of their mileage on Motor Cars Filter Page");
 
 		MotorCarsFilterPage carsFilterPage = new MotorCarsFilterPage(super.getDriver());
 
-		log.info(String.format("MILEAGE FROM: %s; MILEAGE TO: %s", testData.getMileageFrom(), testData.getMileageTo()));
+		testLogger.info(String.format("TEST DATA: Mileage from: %s; Mileage to: %s", testData.getMileageFrom(),
+				testData.getMileageTo()));
 
 		carsFilterPage.inputMileageFrom(Integer.toString(testData.getMileageFrom()));
 		carsFilterPage.inputMileageTo(Integer.toString(testData.getMileageTo()));
 		carsFilterPage.clickOnSearchButton();
 
-		DetailsPage detailPage = carsFilterPage.clickOnDetailsPageLink(0);
-		String mileage = detailPage.getMileageValue();
-		int parsedMileageValue = 0;
+		String mileage = carsFilterPage.clickOnDetailsPageLink(0).getMileageValue();
 
-		if (mileage != null) {
-			parsedMileageValue = Integer.parseInt(mileage);
-			try {
-				Assert.assertTrue(parsedMileageValue >= testData.getMileageFrom()
-						&& parsedMileageValue <= testData.getMileageTo());
-			} catch (AssertionError e) {
-				log.warn(String.format("Actual mileage is out of range %s <= %s <= %s", testData.getMileageFrom(),
-						parsedMileageValue, testData.getMileageTo()));
-			}
-		} else {
-			log.warn("Mileage on the page is null!");
+		int parsedMileageValue = Integer.parseInt(mileage);
+
+		try {
+			Assert.assertTrue(
+					parsedMileageValue >= testData.getMileageFrom() && parsedMileageValue <= testData.getMileageTo());
+		} catch (AssertionError e) {
+			testLogger.warn(String.format("Actual mileage is out of range %s <= %s <= %s", testData.getMileageFrom(),
+					parsedMileageValue, testData.getMileageTo()));
 		}
 	}
 
 	@Test
-	@Ignore
 	public void MotorCarsFilterPageMileageDropdownInput() {
-		log.info("TEST: Verifies sorting cars by choosing mileage values from dropdown on Motor Cars Filter Page");
+		testLogger
+				.info("TEST: Verifies sorting cars by choosing mileage values from dropdown on Motor Cars Filter Page");
 
 		MotorCarsFilterPage carsFilterPage = new MotorCarsFilterPage(super.getDriver());
 
-		log.info(String.format("MILEAGE FROM: %s; MILEAGE TO: %s", testData.getMileageFrom(), testData.getMileageTo()));
+		testLogger.info(String.format("TEST DATA: Mileage from: %s; Mileage to: %s", testData.getSMileageFrom(),
+				testData.getSMileageTo()));
 
-		carsFilterPage.clickOnBrandsTextField();
+		carsFilterPage.clickOnMileageFromTextField();
+		carsFilterPage.chooseMileageFromDropdownItem(testData.getSMileageFrom());
+		carsFilterPage.clickOnMileageToTextField();
+		carsFilterPage.chooseMileageToDropdownItem(testData.getSMileageTo());
+		carsFilterPage.clickOnSearchButton();
+
+		String mileage = carsFilterPage.clickOnDetailsPageLink(0).getMileageValue();
+
+		int parsedMileageValue = Integer.parseInt(mileage);
+
+		try {
+			Assert.assertTrue(
+					parsedMileageValue >= testData.getMileageFrom() && parsedMileageValue <= testData.getMileageTo());
+		} catch (AssertionError e) {
+			testLogger.warn(String.format("Actual mileage is out of range %s <= %s <= %s", testData.getMileageFrom(),
+					parsedMileageValue, testData.getMileageTo()));
+		}
+
+	}
+
+	@Test
+	@Ignore
+	public void MotorCarsFilterPagePriceFiltering() {
+		testLogger.info("TEST: Verifies price filtering on Motor Cars Filter Page");
+
+		MotorCarsFilterPage carsFilterPage = new MotorCarsFilterPage(super.getDriver());
+
+		testLogger.info(String.format("TEST DATA: Mileage from: %s; Mileage to: %s", testData.getPriceFrom(),
+				testData.getPriceTo()));
+		carsFilterPage.clickOnPriceFromTextField();
+		carsFilterPage.choosePriceFromDropdownItem(testData.getPriceFrom());
+		carsFilterPage.clickOnPriceToTextField();
+		carsFilterPage.choosePriceToDropdownItem(testData.getPriceTo());
+	}
+
+	@Test
+	public void MotorCarsFilterPageTransmissionChexBoxes() {
+		testLogger.info(
+				"TEST: Verifies status of the check box All after clicking on another check box in dropdown Transmission type");
+
+		MotorCarsFilterPage carsFilterPage = new MotorCarsFilterPage(super.getDriver());
+
+		boolean allStatus = true;
+		boolean checkboxStatus = false;
+
+		testLogger.info(String.format("ER: All check box: CHECKED - %s; %s check box: UNCHECKED - %S: ", true,
+				testData.getTransmissionType(), false));
+
+		carsFilterPage.clickOnTransmissionField();
+
+		allStatus = carsFilterPage.getTransmissionDropdownAllItemStatus();
+		checkboxStatus = carsFilterPage.getTransmissionCheckboxItemStatus(testData.getTransmissionType());
+
+		try {
+			Assert.assertTrue(allStatus);
+			Assert.assertFalse(checkboxStatus);
+			testLogger.info(String.format("AR: All check box: CHECKED - %s; %s check box: UNCHECKED - %s: ", allStatus,
+					testData.getTransmissionType(), checkboxStatus));
+		} catch (AssertionError e) {
+			testLogger.warn(String.format("WRONG AR: All check box: CHECKED - %s; %s check box: UNCHEKED -%s ", allStatus,
+					testData.getTransmissionType(), checkboxStatus));
+		}
+
+		carsFilterPage.clickOnTransmissionDropdownItem(testData.getTransmissionType());
+		carsFilterPage.clickOnSearchButton();
+		carsFilterPage.clickOnTransmissionField();
+
+		testLogger.info(String.format("ER: All check box: CHECKED - %s; %s check box: UNCHECKED - %S: ", false,
+				testData.getTransmissionType(), true));
+
+		allStatus = carsFilterPage.getTransmissionDropdownAllItemStatus();
+		checkboxStatus = carsFilterPage.getTransmissionCheckboxItemStatus(testData.getTransmissionType());
+
+		try {
+			Assert.assertFalse(allStatus);
+			Assert.assertTrue(checkboxStatus);
+			testLogger.info(String.format("AR: All check box: CHECKED - %s; %s check box: UNCHECKED - %s: ", allStatus,
+					testData.getTransmissionType(), checkboxStatus));
+		} catch (AssertionError e) {
+			testLogger.warn(String.format("WRONG AR: All check box: CHECKED - %s; %s check box: UNCHEKED -%s ", allStatus,
+					testData.getTransmissionType(), checkboxStatus));
+		}
+
+		carsFilterPage.clickOnTransmissionDropdownItem(testData.getTransmissionType());
+		carsFilterPage.clickOnSearchButton();
+		carsFilterPage.clickOnTransmissionField();
+		
+		testLogger.info(String.format("ER: All check box: CHECKED - %s; %s check box: UNCHECKED - %S: ", true,
+				testData.getTransmissionType(), false));
+
+		allStatus = carsFilterPage.getTransmissionDropdownAllItemStatus();
+		checkboxStatus = carsFilterPage.getTransmissionCheckboxItemStatus(testData.getTransmissionType());
+		
+		try {
+			Assert.assertTrue(allStatus);
+			Assert.assertFalse(checkboxStatus);
+			testLogger.info(String.format("AR: All check box: CHECKED - %s; %s check box: UNCHECKED - %s: ", allStatus,
+					testData.getTransmissionType(), checkboxStatus));
+		} catch (AssertionError e) {
+			testLogger.warn(String.format("WRONG AR: All check box: CHECKED - %s; %s check box: UNCHEKED -%s ", allStatus,
+					testData.getTransmissionType(), checkboxStatus));
+		}
 	}
 }

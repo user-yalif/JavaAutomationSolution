@@ -25,22 +25,22 @@ public class BaseFilterPage extends BasePage {
 	// end Locators
 
 	protected void inputPrice(WebElement element, String price) {
-		super.action.sendKeysTo(element, price);
+		action.sendKeysTo(element, price);
 	}
 
 	protected String getTextFieldValue(WebElement textField) {
-		return super.action.getTextOf(textField);
+		return action.getTextOf(textField);
 	}
 
 	protected void clickOnCrossIconOf(WebElement textField) {
-		super.action.clickOn(crossIconOf(textField));
+		action.clickOn(crossIconOf(textField));
 	}
 
 	public void inputTextField(WebElement textFieldInput, String text) {
-		super.action.sendKeysTo(textFieldInput, text);
+		action.sendKeysTo(textFieldInput, text);
 	}
 	
 	public void waitForPageLoaded() {
-		super.wait.appearenceOf(pageLoader);
+		wait.appearenceOf(pageLoader);
 	}
 }

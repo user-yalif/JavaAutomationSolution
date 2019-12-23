@@ -33,6 +33,10 @@ public class Action {
 	}
 	
 	public void pressEnter() {
-		new Actions(this.webDriver).sendKeys(Keys.ENTER);
+		new Actions(this.webDriver).sendKeys(Keys.ENTER).perform();
+	}
+	
+	public boolean isChecked(WebElement element) {
+		return element.isSelected();
 	}
 }
