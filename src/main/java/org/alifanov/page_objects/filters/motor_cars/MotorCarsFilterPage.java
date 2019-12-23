@@ -18,7 +18,7 @@ public class MotorCarsFilterPage extends BaseFilterPage {
 	public MotorCarsFilterPage(WebDriver driver) {
 		super(driver);
 		log = LogHelper.getLogger(MotorCarsFilterPage.class);
-		
+
 		try {
 			assertTrue(wait.appearenceOf(motorCarsFilterPageHeader));
 			log.info("PAGE: Motor Cars Filter Page UPLOADED");
@@ -47,6 +47,7 @@ public class MotorCarsFilterPage extends BaseFilterPage {
 			"//li[@data-key='motor_mileage']//div[contains(@class, 'filter-item-to')]//ul[contains(@class, 'small suggestinput') and @style='display: block;']");
 	private final By transmissionDropbox = By
 			.xpath("//li[@id='param_transmission_type']//ul[@style='display: block;']");
+	private final By priceLocator = By.xpath("//p[@class='price']");
 
 	private List<WebElement> textFieldsHeadersLocator() {
 		return getElements(By.xpath("//span[contains(@class, 'header block')]"));
@@ -129,15 +130,16 @@ public class MotorCarsFilterPage extends BaseFilterPage {
 	}
 
 	private WebElement transmissionDropdownAllItemLocator() {
-		return getElement(By.xpath("//li[@id='param_transmission_type']//ul[@style='display: block;']//label[normalize-space()='Все']//input"));
+		return getElement(By.xpath(
+				"//li[@id='param_transmission_type']//ul[@style='display: block;']//label[normalize-space()='Все']//input"));
 	}
-	
+
 	private WebElement transmissionDropdownItemLocator(String itemName) {
 		return getElement(
 				By.xpath(String.format("//li[@id='param_transmission_type']//input[@data-text='%s']", itemName)));
 	}
 // end Locators
-	
+
 	public List<String> getTextFieldsHeaders() {
 		List<WebElement> textFields = this.textFieldsHeadersLocator();
 		List<String> headers = new ArrayList<String>();
@@ -258,8 +260,19 @@ public class MotorCarsFilterPage extends BaseFilterPage {
 	public boolean getTransmissionDropdownAllItemStatus() {
 		return action.isChecked(transmissionDropdownAllItemLocator());
 	}
-	
+
 	public boolean getTransmissionCheckboxItemStatus(String itemName) {
 		return action.isChecked(transmissionDropdownItemLocator(itemName));
+	}
+
+	public List<String> getPriceValues() {
+		List<WebElement> priceElements = getElements(priceLocator);
+		List<String> priceValues = new ArrayList<String>();
+		
+		for (WebElement element : priceElements) {
+			priceValues.add(action.getTextOf(element));
+		}
+		
+		return priceValues;
 	}
 }
