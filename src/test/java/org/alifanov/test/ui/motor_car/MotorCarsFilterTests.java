@@ -163,6 +163,9 @@ public class MotorCarsFilterTests extends UIBaseTest {
 		carsFilterPage.choosePriceFromDropdownItem(testData.getPriceFrom());
 		carsFilterPage.clickOnPriceToTextField();
 		carsFilterPage.choosePriceToDropdownItem(testData.getPriceTo());
+		carsFilterPage.clickOnSearchButton();
+		
+		List<String> prices = carsFilterPage.getPriceValues();
 	}
 
 	@Test
