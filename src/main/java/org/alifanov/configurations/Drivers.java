@@ -21,7 +21,7 @@ public final class Drivers {
 		switch (browserType) {
 		case "Chrome":
 			System.setProperty("webdriver.chrome.driver", pathToDriver);
-			this.webBrowser = new ChromeDriver(getChromeOptions());
+			webBrowser = new ChromeDriver(getChromeOptions());
 			break;
 		case "FireFox":
 			break;

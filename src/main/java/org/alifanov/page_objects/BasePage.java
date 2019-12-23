@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.alifanov.utility.Action;
 import org.alifanov.utility.Waits;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,6 +15,7 @@ public class BasePage {
 	private @Getter WebDriver webDriver;
 	protected Action action;
 	protected Waits wait;
+	protected Logger log;
 
 	public BasePage(WebDriver driver) {
 		this.webDriver = driver;
@@ -25,20 +27,20 @@ public class BasePage {
 	private By closeCookieButton = By.xpath("//button[contains(@class, 'cookie-close')]");
 	
 	private WebElement closeCookiesButtonLocator() {
-		return this.webDriver.findElement(closeCookieButton);
+		return webDriver.findElement(closeCookieButton);
 	}
 	// end Locators
 	
 	protected WebElement getElement(By locator) {
-		return this.webDriver.findElement(locator);
+		return webDriver.findElement(locator);
 	}
 
 	protected List<WebElement> getElements(By locator) {
-		return this.webDriver.findElements(locator);
+		return webDriver.findElements(locator);
 	}
 	
 	protected void closeCookieMessage() {
-		this.wait.appearenceOf(closeCookieButton);
-		this.action.clickOn(closeCookiesButtonLocator());
+		wait.appearenceOf(closeCookieButton);
+		action.clickOn(closeCookiesButtonLocator());
 	}
 }

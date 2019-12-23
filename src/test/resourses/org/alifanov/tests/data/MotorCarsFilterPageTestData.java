@@ -12,9 +12,14 @@ public class MotorCarsFilterPageTestData {
 	private @Getter List<String> priceInput;;
 	private @Getter int mileageFrom;
 	private @Getter int mileageTo;
+	private @Getter String sMileageFrom;
+	private @Getter String sMileageTo;
+	private @Getter String priceFrom;
+	private @Getter String priceTo;
+	private @Getter String transmissionType;
 
 	public MotorCarsFilterPageTestData() {
-		this.defaultPlaceholders = new ArrayList<String>(
+		defaultPlaceholders = new ArrayList<String>(
 				List.of(
 						"Марка",
 						"Район",
@@ -34,7 +39,7 @@ public class MotorCarsFilterPageTestData {
 						"Доп. опции",
 						"Растаможена"
 						));
-		this.brands = new ArrayList<String>(
+		brands = new ArrayList<String>(
 				List.of(
 						"Audi",
 						"BMW",
@@ -44,14 +49,19 @@ public class MotorCarsFilterPageTestData {
 						"Mazda",
 						"Mercedes-Benz"
 						));
-		this.priceInput = new ArrayList<String>(
+		priceInput = new ArrayList<String>(
 				List.of(
 						"52000",
 						"CharacterS",
 						"!@#$%^&*()",
 						"12358$%9"
 						));
-		this.mileageFrom = 100000;
-		this.mileageTo = 200000;
+		mileageFrom = 100000;
+		mileageTo = 200000;
+		sMileageFrom = "100 000 км";
+		sMileageTo = "200 000 км";
+		priceFrom = "100 000 грн.";
+		priceTo = "500 000 грн.";
+		transmissionType = "Вариатор";
 	}
 }						

@@ -18,28 +18,29 @@ public class UIBaseTest {
 
 	private String browserType = properties.getProperty("browser.type");
 	private String testEnvUrl = properties.getProperty("test.env.url");
-	private Logger log = LogHelper.getLogger(UIBaseTest.class);
-
+	protected Logger baseTestLog = LogHelper.getLogger(UIBaseTest.class);
+	protected Logger testLogger;
+	
 	public UIBaseTest() {
 	}
 
 	private void LoadBrowser() {
-		this.log.info(String.format("%s browser loading", this.browserType));
-		this.driver = new Drivers(this.browserType);
-		this.log.info(String.format("Go to page: %s", testEnvUrl));
-		this.driver.getWebBrowser().get(testEnvUrl);
+		baseTestLog.info(String.format("%s browser loading", browserType));
+		driver = new Drivers(browserType);
+		baseTestLog.info(String.format("Go to page: %s", testEnvUrl));
+		driver.getWebBrowser().get(testEnvUrl);
 	}
 
 	@Before
 	public void launchBrowser() {
-		this.LoadBrowser();
+		LoadBrowser();
 	}
 
 	@After
 	public void closeAllTestResourses() {
 		for (WebDriver webDriverInstance : Drivers.webBrowserInstanses) {
 			webDriverInstance.quit();
-			log.info(String.format("%s Driver: Quit", this.browserType));
+			baseTestLog.info(String.format("%s Driver: Quit", browserType));
 		}
 
 		Drivers.webBrowserInstanses.clear();
