@@ -2,6 +2,7 @@ package org.alifanov.test.ui.motor_car;
 
 import static org.alifanov.utility.ArayListsHelper.sortAscending;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.alifanov.page_objects.filters.motor_cars.MotorCarsFilterPage;
@@ -10,7 +11,6 @@ import org.alifanov.tests.data.MotorCarsFilterPageTestData;
 import org.alifanov.utility.LogHelper;
 import org.alifanov.utility.RegexHelper;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class MotorCarsFilterTests extends UIBaseTest {
@@ -103,13 +103,14 @@ public class MotorCarsFilterTests extends UIBaseTest {
 		testLogger.info(String.format("TEST DATA: Mileage from: %s; Mileage to: %s", testData.getMileageFrom(),
 				testData.getMileageTo()));
 
-		carsFilterPage.inputMileageFrom(Integer.toString(testData.getMileageFrom()));
-		carsFilterPage.inputMileageTo(Integer.toString(testData.getMileageTo()));
+		carsFilterPage.inputMileageFrom(Double.toString(testData.getMileageFrom()));
+		carsFilterPage.inputMileageTo(Double.toString(testData.getMileageTo()));
 		carsFilterPage.clickOnSearchButton();
 
-		String mileage = carsFilterPage.clickOnDetailsPageLink(0).getMileageValue();
+		String mileage = carsFilterPage.clickOnDetailsPageLink(0)
+									   .getMileageValue();
 
-		int parsedMileageValue = Integer.parseInt(mileage);
+		int parsedMileageValue = Integer.parseInt(RegexHelper.getSeparatedIntegerFromString(mileage));
 
 		try {
 			Assert.assertTrue(
@@ -136,9 +137,10 @@ public class MotorCarsFilterTests extends UIBaseTest {
 		carsFilterPage.chooseMileageToDropdownItem(testData.getSMileageTo());
 		carsFilterPage.clickOnSearchButton();
 
-		String mileage = carsFilterPage.clickOnDetailsPageLink(0).getMileageValue();
+		String mileage = carsFilterPage.clickOnDetailsPageLink(0)
+									   .getMileageValue();
 
-		int parsedMileageValue = Integer.parseInt(mileage);
+		int parsedMileageValue = Integer.parseInt(RegexHelper.getSeparatedIntegerFromString(mileage));
 
 		try {
 			Assert.assertTrue(
@@ -151,7 +153,6 @@ public class MotorCarsFilterTests extends UIBaseTest {
 	}
 
 	@Test
-	@Ignore
 	public void MotorCarsFilterPagePriceFiltering() {
 		testLogger.info("TEST: Verifies price filtering on Motor Cars Filter Page");
 
@@ -164,8 +165,36 @@ public class MotorCarsFilterTests extends UIBaseTest {
 		carsFilterPage.clickOnPriceToTextField();
 		carsFilterPage.choosePriceToDropdownItem(testData.getPriceTo());
 		carsFilterPage.clickOnSearchButton();
-		
+
 		List<String> prices = carsFilterPage.getPriceValues();
+		List<Double> priceValues = new ArrayList<Double>();
+
+		for (String price : prices) {
+			if (price.contains("$")) {
+				priceValues.add(Double.parseDouble(RegexHelper.getSeparatedIntegerFromString(price).replaceAll(" ", ""))
+						* 23.2);
+			} else {
+				priceValues
+						.add(Double.parseDouble(RegexHelper.getSeparatedIntegerFromString(price).replaceAll(" ", "")));
+			}
+		}
+
+		double priceFrom = Double
+				.parseDouble(RegexHelper.getSeparatedIntegerFromString(testData.getPriceFrom()).replaceAll(" ", ""));
+		double priceTo = Double
+				.parseDouble(RegexHelper.getSeparatedIntegerFromString(testData.getPriceTo()).replaceAll(" ", ""));
+
+		try {
+			for (Double price : priceValues) {
+				testLogger.info(String.format("PRICE: %s", price.toString()));
+				Assert.assertTrue(priceFrom <= price && priceTo >= price);
+				testLogger.info(
+						String.format("CORRECT RESULT: price is in range from %s to %s", priceFrom, priceTo));
+			}
+		} catch (AssertionError e) {
+			testLogger.warn(
+					String.format("INCORRECT RESULT: price is out of range from %s to %s", priceFrom, priceTo));
+		}
 	}
 
 	@Test
@@ -192,8 +221,8 @@ public class MotorCarsFilterTests extends UIBaseTest {
 			testLogger.info(String.format("AR: All check box: CHECKED - %s; %s check box: UNCHECKED - %s: ", allStatus,
 					testData.getTransmissionType(), checkboxStatus));
 		} catch (AssertionError e) {
-			testLogger.warn(String.format("WRONG AR: All check box: CHECKED - %s; %s check box: UNCHEKED -%s ", allStatus,
-					testData.getTransmissionType(), checkboxStatus));
+			testLogger.warn(String.format("WRONG AR: All check box: CHECKED - %s; %s check box: UNCHEKED -%s ",
+					allStatus, testData.getTransmissionType(), checkboxStatus));
 		}
 
 		carsFilterPage.clickOnTransmissionDropdownItem(testData.getTransmissionType());
@@ -212,28 +241,28 @@ public class MotorCarsFilterTests extends UIBaseTest {
 			testLogger.info(String.format("AR: All check box: CHECKED - %s; %s check box: UNCHECKED - %s: ", allStatus,
 					testData.getTransmissionType(), checkboxStatus));
 		} catch (AssertionError e) {
-			testLogger.warn(String.format("WRONG AR: All check box: CHECKED - %s; %s check box: UNCHEKED -%s ", allStatus,
-					testData.getTransmissionType(), checkboxStatus));
+			testLogger.warn(String.format("WRONG AR: All check box: CHECKED - %s; %s check box: UNCHEKED -%s ",
+					allStatus, testData.getTransmissionType(), checkboxStatus));
 		}
 
 		carsFilterPage.clickOnTransmissionDropdownItem(testData.getTransmissionType());
 		carsFilterPage.clickOnSearchButton();
 		carsFilterPage.clickOnTransmissionField();
-		
+
 		testLogger.info(String.format("ER: All check box: CHECKED - %s; %s check box: UNCHECKED - %S: ", true,
 				testData.getTransmissionType(), false));
 
 		allStatus = carsFilterPage.getTransmissionDropdownAllItemStatus();
 		checkboxStatus = carsFilterPage.getTransmissionCheckboxItemStatus(testData.getTransmissionType());
-		
+
 		try {
 			Assert.assertTrue(allStatus);
 			Assert.assertFalse(checkboxStatus);
 			testLogger.info(String.format("AR: All check box: CHECKED - %s; %s check box: UNCHECKED - %s: ", allStatus,
 					testData.getTransmissionType(), checkboxStatus));
 		} catch (AssertionError e) {
-			testLogger.warn(String.format("WRONG AR: All check box: CHECKED - %s; %s check box: UNCHEKED -%s ", allStatus,
-					testData.getTransmissionType(), checkboxStatus));
+			testLogger.warn(String.format("WRONG AR: All check box: CHECKED - %s; %s check box: UNCHEKED -%s ",
+					allStatus, testData.getTransmissionType(), checkboxStatus));
 		}
 	}
 }
