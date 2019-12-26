@@ -17,12 +17,12 @@ public class DetailsPage extends BasePage {
 
 		try {
 			assertTrue(wait.appearenceOf(writeToAthor));
-			log.info("PAGE: Detail Page UPLOADED");
+			log.info("PAGE: " + DetailsPage.class.getSimpleName() + " UPLOADED");
 		} catch (AssertionError e) {
-			log.warn("PAGE: Detail Page UNABLE TO UPLOAD");
+			log.warn("PAGE: " + DetailsPage.class.getSimpleName() + " UNABLE TO UPLOAD");
 			throw new AssertionError();
 		} catch (TimeoutException e) {
-			log.warn("PAGE: Detail Page UNABLE TO UPLOAD Time run out: " + e.getLocalizedMessage());
+			log.warn("PAGE: " + DetailsPage.class.getSimpleName() + " UNABLE TO UPLOAD Time run out: " + e.getMessage());
 			throw new AssertionError();
 		}
 	}
